@@ -1,0 +1,31 @@
+h1 {
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+h6 {
+    color: white;
+}
+
+p {
+    margin-left: 20%;
+}
+
+.btn-primary {
+    background-color: rgb(66 39 111);
+    border-color: rgb(66 39 111);
+}
+
+hr {
+    margin: 5px 18% 5px 18%;
+    background: darkgray;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, .1);
+}
+
+#Answer {
+    margin-left: 20%;
+    color: darkgray;
+}
