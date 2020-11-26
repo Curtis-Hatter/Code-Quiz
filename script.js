@@ -161,9 +161,13 @@ function randomizeSelection(randomQuestion) {
         var j = Math.floor(Math.random() * (i + 1));
         [choices[i], choices[j]] = [choices[j], choices[i]];
     }
+    for (var i = 0; i < randomQuestion.answers.length; i++) {
+        console.log(choices[i]);
+    }
     // for (var i = 0; i < randomQuestion.answers.length; i++) {
-    //     console.log(choices[i]);
+    //     document.querySelector("p").innerHTML = choices[i];
     // }
+
 
 }
 //object
