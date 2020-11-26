@@ -10,26 +10,28 @@ var time = 3;
 //objects
 var q1 = {
     qstion: "Inside which HTML element do we put the JavaScript?",
-    answers: ["<javascript>", "<js>", "<script>", "<scripting>"]
+    answers: ["<script>", "<javascript>", "<js>", "<scripting>"],
+
 }
+
 var q2 = {
     qstion: "The external JavaScript file must contain the <script> tag.",
-    answers: ["True", "False"]
+    answers: ["False", "True"]
 }
 var q3 = {
     qstion: "How do you write \"Hello World\" in an alert box?",
-    answers: ["alertBox(\"Hello World\");", "msgBox(\"Hello World\");", "alert(\"Hello World\");", "msg(\"Hello World\");"]
+    answers: ["alert(\"Hello World\");", "alertBox(\"Hello World\");", "msgBox(\"Hello World\");", "msg(\"Hello World\");"]
 }
 var q4 = {
     qstion: "How do you create a function in JavaScript?",
-    answers: ["function:myFunction()", "function myFunction()", "function = myFunction()"]
+    answers: ["function myFunction()", "function:myFunction()", "function = myFunction()"]
 }
 var q5 = {
     qstion: "How do you call a function named \"myFunction\"?",
     answers: ["myFunction()", "call myFunciton()", "call function myFunciton"]
 }
 
-//Question stored as an array of objects
+//Questions stored as an array of objects
 var questionsArray = [q1, q2, q3, q4, q5];
 
 
@@ -56,7 +58,7 @@ function formCreator() {
     questions.textContent = "All Done!";
 
     //checking for nodes
-    console.log(highScore.childElementCount)
+    // console.log(highScore.childElementCount)
 
     //changing innerHTML for Content
     highScore.innerHTML = "<h3> Your final score is: " + userScore + "!</h3>";
@@ -119,7 +121,7 @@ function formCreator() {
     form.appendChild(div2);
 
     //recheck for nodes
-    console.log(highScore.childElementCount);
+    // console.log(highScore.childElementCount);
 
     //adding event listeners to restart button to restart quiz
     returnButton.addEventListener("click", restartQuiz);
@@ -127,7 +129,7 @@ function formCreator() {
 
 //click event handler taking user back to quiz
 function restartQuiz() {
-    var randomQuestion = questionsArray[Math.floor(Math.random() * 4)];
+    var randomQuestion = questionsArray[Math.floor(Math.random() * questionsArray.length)];
     questions.textContent = randomQuestion.qstion;
     highScore.innerHTML = "";
     for (var i = 0; i < randomQuestion.answers.length; i++) {
@@ -135,15 +137,35 @@ function restartQuiz() {
         var choiceDescription = document.createElement("button");
         choiceDescription.setAttribute("type", "button");
         choiceDescription.setAttribute("class", "btn btn-primary");
+        choiceDescription.setAttribute("id", i);
         choiceDescription.textContent = (i + 1) + ". " + randomQuestion.answers[i];
         choices.appendChild(choiceDescription);
         highScore.appendChild(choices);
     }
-    quizTimerCountDown();
+    // quizTimerCountDown();
+    randomizeSelection(randomQuestion);
+
 }
 
 document.getElementById("Quiz").addEventListener("click", restartQuiz);
 
+function randomizeSelection(randomQuestion) {
+    var choices = [];
+    for (var i = 0; i < randomQuestion.answers.length; i++) {
+        choices.push(document.getElementById(i));
+    }
+    // for (var i = 0; i < randomQuestion.answers.length; i++) {
+    //     console.log(choices[i]);
+    // }
+    for (var i = choices.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        [choices[i], choices[j]] = [choices[j], choices[i]];
+    }
+    // for (var i = 0; i < randomQuestion.answers.length; i++) {
+    //     console.log(choices[i]);
+    // }
+
+}
 //object
 //question
 //array 
