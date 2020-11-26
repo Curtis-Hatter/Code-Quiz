@@ -7,40 +7,49 @@ var highScore = document.querySelector("#highScore");
 var userScore = 18;
 var time = 3;
 
-// //objects
+//objects
 var q1 = {
-    qstion: "Lorem Ipsun is what language?",
-    answers: ["Latin", "Spanish", "American", "Slavic"]
+    qstion: "Inside which HTML element do we put the JavaScript?",
+    answers: ["<javascript>", "<js>", "<script>", "<scripting>"]
 }
-// var q2 = {
-//     qstion: "Lorem Ipsun is what language?",
-//     answers: ["Latin", "Spanish", "American", "Slavic"]
-// }
-// var q3 = {
-//     qstion: "Lorem Ipsun is what language?",
-//     answers: ["Latin", "Spanish", "American", "Slavic"]
-// }
-// var q4 = {
-//     qstion: "Lorem Ipsun is what language?",
-//     answers: ["Latin", "Spanish", "American", "Slavic"]
-// }
+var q2 = {
+    qstion: "The external JavaScript file must contain the <script> tag.",
+    answers: ["True", "False"]
+}
+var q3 = {
+    qstion: "How do you write \"Hello World\" in an alert box?",
+    answers: ["alertBox(\"Hello World\");", "msgBox(\"Hello World\");", "alert(\"Hello World\");", "msg(\"Hello World\");"]
+}
+var q4 = {
+    qstion: "How do you create a function in JavaScript?",
+    answers: ["function:myFunction()", "function myFunction()", "function = myFunction()"]
+}
+var q5 = {
+    qstion: "How do you call a function named \"myFunction\"?",
+    answers: ["myFunction()", "call myFunciton()", "call function myFunciton"]
+}
 
-// //Question stored as an array of objects
-// var questionsArray = [q1, q2, q3, q4];
+//Question stored as an array of objects
+var questionsArray = [q1, q2, q3, q4, q5];
 
 
 //Setting timer for Quiz
-var countDown = setInterval(function () {
-    time--;
-    timer.textContent = "Timer: " + time + " seconds";
-    if (time <= 0) {
-        time = 0;
+function quizTimerCountDown() {
+    //reset timer for quiz
+    time = 3;
+    var countDown = setInterval(function () {
+        time--;
         timer.textContent = "Timer: " + time + " seconds";
-        formCreator()
-        clearInterval(countDown);
-        return;
-    }
-}, 1000)
+        if (time <= 0) {
+            time = 0;
+            timer.textContent = "Timer: " + time + " seconds";
+            formCreator()
+            clearInterval(countDown);
+            return;
+        }
+    }, 1000)
+}
+// quizTimerCountDown();
 
 //create the final form after quiz is concluded
 function formCreator() {
@@ -118,18 +127,22 @@ function formCreator() {
 
 //click event handler taking user back to quiz
 function restartQuiz() {
-    questions.textContent = q1.qstion;
+    var randomQuestion = questionsArray[Math.floor(Math.random() * 4)];
+    questions.textContent = randomQuestion.qstion;
     highScore.innerHTML = "";
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < randomQuestion.answers.length; i++) {
         var choices = document.createElement("p");
         var choiceDescription = document.createElement("button");
         choiceDescription.setAttribute("type", "button");
         choiceDescription.setAttribute("class", "btn btn-primary");
-        choiceDescription.textContent = (i + 1) + ". " + q1.answers[i];
+        choiceDescription.textContent = (i + 1) + ". " + randomQuestion.answers[i];
         choices.appendChild(choiceDescription);
         highScore.appendChild(choices);
     }
+    quizTimerCountDown();
 }
+
+document.getElementById("Quiz").addEventListener("click", restartQuiz);
 
 //object
 //question

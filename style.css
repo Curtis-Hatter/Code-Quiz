@@ -1,6 +1,14 @@
+* {
+    font-family: 'Goldman', cursive;
+}
+
 h1, p, h3, form {
     margin-left: 20%;
     margin-right: 20%;
+}
+
+main {
+    margin-top: 4%;
 }
 
 h6 {
@@ -28,4 +36,13 @@ hr {
 #Answer {
     margin-left: 20%;
     color: darkgray;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.center {
+    left: 38%;
+    top: 15px;
 }
