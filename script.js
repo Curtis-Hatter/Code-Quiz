@@ -138,7 +138,7 @@ function restartQuiz() {
         choiceDescription.setAttribute("type", "button");
         choiceDescription.setAttribute("class", "btn btn-primary");
         choiceDescription.setAttribute("id", i);
-        choiceDescription.textContent = (i + 1) + ". " + randomQuestion.answers[i];
+        choiceDescription.textContent = randomQuestion.answers[i];
         choices.appendChild(choiceDescription);
         highScore.appendChild(choices);
     }
@@ -161,11 +161,17 @@ function randomizeSelection(randomQuestion) {
         var j = Math.floor(Math.random() * (i + 1));
         [choices[i], choices[j]] = [choices[j], choices[i]];
     }
+    highScore.innerHTML = "";
     for (var i = 0; i < randomQuestion.answers.length; i++) {
+        var buttonBreak = document.createElement("p");
+        var buttontext = choices[i].textContent;
+        choices[i].textContent = (i + 1) + ". " + buttontext;
+        buttonBreak.appendChild(choices[i]);
+        highScore.appendChild(buttonBreak);
         console.log(choices[i]);
     }
     // for (var i = 0; i < randomQuestion.answers.length; i++) {
-    //     document.querySelector("p").innerHTML = choices[i];
+    //     document.getElementById(i).innerHTML = choices[i];
     // }
 
 
