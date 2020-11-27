@@ -1,3 +1,21 @@
+// HOW QUIZ FUNCTIONS (DESIRED FUNCTION AT LEAST)
+// QUESTIONS/ANSWERS STORED AS OBJECTS
+// OBJECTS THEN STORED AS AN ARRAY TO REFERENCE RANDOMLY
+// USER BEGINS QUIZ
+//  -QUESTION IS OUTPUT AS TEXT
+//  -ANSWERS OUTPUT RANDOMLY AS BUTTONS
+//  -BUTTON PRESSED: TWO OUTCOMES
+//  -CORRECT?: OUTPUT CORRECT THEN UPDATE SCORE
+//  -WRONG?: OUTPUT WRONG THEN UPDATE TIMER
+//  -ONCE TIME HAS RUN OUT OR ALL QUESTIONS ANSWERED
+// OUTPUT LEADERBOARD (FORM)
+//  -USER CAN INPUT TEXT FOR HIGHSCORE BY SUBMITTING
+//      -STORES USER DATA AND SCORE TOGETHER IN LOCAL STORAGE
+//  -RESTART QUIZ
+//      -(GO BACK TO "USER BEGINS QUIZ")
+//  -CLEAR LEADERBOARDS
+//      -CLICK BUTTON TO CLEAR STORED DATA
+
 //selections of tags to reference
 var timer = document.querySelector("#Timer");
 var questions = document.querySelector("#Questions");
@@ -13,7 +31,6 @@ var q1 = {
     answers: ["<script>", "<javascript>", "<js>", "<scripting>"],
 
 }
-
 var q2 = {
     qstion: "The external JavaScript file must contain the <script> tag.",
     answers: ["False", "True"]
@@ -33,7 +50,6 @@ var q5 = {
 
 //Questions stored as an array of objects
 var questionsArray = [q1, q2, q3, q4, q5];
-
 
 //Setting timer for Quiz
 function quizTimerCountDown() {
@@ -127,20 +143,18 @@ function formCreator() {
     returnButton.addEventListener("click", restartQuiz);
 }
 
-//click event handler taking user back to quiz
+//click event handler taking user back to quiz or starting quiz
 function restartQuiz() {
     var randomQuestion = questionsArray[Math.floor(Math.random() * questionsArray.length)];
     questions.textContent = randomQuestion.qstion;
-    highScore.innerHTML = "";
+    // create unique id's to later find correct answer to question
     for (var i = 0; i < randomQuestion.answers.length; i++) {
-        var choices = document.createElement("p");
         var choiceDescription = document.createElement("button");
         choiceDescription.setAttribute("type", "button");
         choiceDescription.setAttribute("class", "btn btn-primary");
         choiceDescription.setAttribute("id", i);
         choiceDescription.textContent = randomQuestion.answers[i];
-        choices.appendChild(choiceDescription);
-        highScore.appendChild(choices);
+        highScore.appendChild(choiceDescription);
     }
     // quizTimerCountDown();
     randomizeSelection(randomQuestion);
