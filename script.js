@@ -23,7 +23,7 @@ var highScore = document.querySelector("#highScore");
 
 //global variables manipulated over the course of the quiz
 var userScore = 0;
-var time = 3;
+var time = 30;
 
 // Questions asked stored as objects
 var q1 = {
@@ -44,7 +44,7 @@ var q4 = {
 }
 var q5 = {
     qstion: "How do you call a function named \"myFunction\"?",
-    answers: ["myFunction()", "call myFunciton()", "call function myFunciton"]
+    answers: ["myFunction()", "call myFunction()", "call function myFunction"]
 }
 
 //Questions stored as an array of objects
@@ -65,7 +65,7 @@ function usedQuestion() {
 //Setting timer for Quiz
 function quizTimerCountDown() {
     //reset timer for quiz
-    time = 3;
+    time = 30;
     var countDown = setInterval(function () {
         time--;
         timer.textContent = "Timer: " + time + " seconds";
@@ -79,6 +79,93 @@ function quizTimerCountDown() {
     }, 1000)
 }
 // quizTimerCountDown();
+
+//click event handler taking user back to quiz or starting quiz
+function restartQuiz() {
+    questionsArray = [q1, q2, q3, q4, q5];
+    randomizeQuestions();
+    // quizTimerCountDown();
+    nextQuestion();
+}
+
+//Sets up page with a question and answers
+function nextQuestion() {
+    if (questionsArray === []) {
+        formCreator()
+        return;
+    }
+    var nextQuestion = questionsArray[questionsArray.length - 1];
+    usedQuestion();
+    questions.textContent = nextQuestion.qstion;
+    // create unique id's to later find correct answer to question
+    for (var i = 0; i < nextQuestion.answers.length; i++) {
+        var choiceDescription = document.createElement("button");
+        choiceDescription.setAttribute("type", "button");
+        choiceDescription.setAttribute("class", "btn btn-primary answer");
+        choiceDescription.setAttribute("id", i);
+        choiceDescription.textContent = nextQuestion.answers[i];
+        highScore.appendChild(choiceDescription);
+    }
+    randomizeSelection(nextQuestion);
+    userChoice();
+    console.log(highScore.childElementCount);
+}
+
+// Randomize selection of answers so that User can't cheat
+function randomizeSelection(nextQuestion) {
+    var choices = [];
+    for (var i = 0; i < nextQuestion.answers.length; i++) {
+        choices.push(document.getElementById(i));
+    }
+    for (var i = choices.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        [choices[i], choices[j]] = [choices[j], choices[i]];
+    }
+    highScore.innerHTML = "";
+    for (var i = 0; i < nextQuestion.answers.length; i++) {
+        var buttonBreak = document.createElement("p");
+        var buttontext = choices[i].textContent;
+        choices[i].textContent = (i + 1) + ". " + buttontext;
+        buttonBreak.appendChild(choices[i]);
+        highScore.appendChild(buttonBreak);
+    }
+}
+
+// Listening to the user Choice and giving feedback on whether it is right or wrong
+function userChoice() {
+    highScore.addEventListener("click", function (event) {
+        event.preventDefault();
+        if (event.target.matches(".answer")) {
+            var userAnswer = event.target.id;
+            var feedBack = document.createElement("h5")
+            if (userAnswer === "0") {
+                userScore = userScore + 10;
+                feedBack.textContent = "Correct!";
+                highScore.appendChild(document.createElement("hr"));
+                highScore.appendChild(feedBack);
+                // setTimeout(function () {
+                //     nextQuestion();
+                // }, 500);
+                nextQuestion();
+            }
+            else {
+                time = time - 10;
+                feedBack.textContent = "Wrong!";
+                highScore.appendChild(document.createElement("hr"));
+                highScore.appendChild(feedBack);
+                // setTimeout(function () {
+                //     nextQuestion();
+                // }, 500);
+                nextQuestion();
+            }
+        }
+    })
+}
+
+// Event listener for starting quiz asigned to Begin Button
+document.getElementById("Quiz").addEventListener("click", restartQuiz);
+
+/* NEED TO BREAK HERE FOR SANITY */
 
 //create the final form after quiz is concluded
 function formCreator() {
@@ -153,51 +240,3 @@ function formCreator() {
     //adding event listeners to restart button to restart quiz
     returnButton.addEventListener("click", restartQuiz);
 }
-
-//click event handler taking user back to quiz or starting quiz
-function restartQuiz() {
-    questionsArray = [q1, q2, q3, q4, q5];
-    randomizeQuestions();
-    var randomQuestion = questionsArray[questionsArray.length - 1];
-    usedQuestion();
-    questions.textContent = randomQuestion.qstion;
-    // create unique id's to later find correct answer to question
-    for (var i = 0; i < randomQuestion.answers.length; i++) {
-        var choiceDescription = document.createElement("button");
-        choiceDescription.setAttribute("type", "button");
-        choiceDescription.setAttribute("class", "btn btn-primary");
-        choiceDescription.setAttribute("id", i);
-        choiceDescription.textContent = randomQuestion.answers[i];
-        highScore.appendChild(choiceDescription);
-    }
-    // quizTimerCountDown();
-    randomizeSelection(randomQuestion);
-
-}
-
-// Randomize selection of answers so that User can't cheat
-function randomizeSelection(randomQuestion) {
-    var choices = [];
-    for (var i = 0; i < randomQuestion.answers.length; i++) {
-        choices.push(document.getElementById(i));
-    }
-    for (var i = choices.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        [choices[i], choices[j]] = [choices[j], choices[i]];
-    }
-    highScore.innerHTML = "";
-    for (var i = 0; i < randomQuestion.answers.length; i++) {
-        var buttonBreak = document.createElement("p");
-        var buttontext = choices[i].textContent;
-        choices[i].textContent = (i + 1) + ". " + buttontext;
-        buttonBreak.appendChild(choices[i]);
-        highScore.appendChild(buttonBreak);
-    }
-}
-
-// Event listener for starting quiz asigned to Begin Button
-document.getElementById("Quiz").addEventListener("click", restartQuiz);
-
-//object
-//question
-//array 
