@@ -171,6 +171,16 @@ document.getElementById("Quiz").addEventListener("click", restartQuiz);
 
 /* NEED TO BREAK HERE FOR SANITY */
 
+//creating array for local storage to be presented
+var theLeaderboardUsers = [];
+var theLeaderboardScores = [];
+if ((localStorage.getItem("User")) || (localStorage.getItem("Scores"))) {
+    leaderBoardUsers = JSON.parse(localStorage.getItem("Users"));
+    leaderBoardScores = JSON.parse(localStorage.getItem("Scores"));
+    console.log("PLEASE WORK");
+    console.log(leaderBoardUsers);
+}
+
 //create the final form after quiz is concluded
 function formCreator() {
     time = 0;
@@ -264,6 +274,7 @@ function formCreator() {
             localStorage.setItem("Score", userScore);
 
             //leaderboardSubmission function here
+            leaderBoardStorage();
             leaderBoardSubmission();
 
             //apply hr for cleaner look
@@ -276,20 +287,20 @@ function formCreator() {
     })
 }
 
-//creating array for local storage to be presented
-var theLeaderboardUsers = [];
-var theLeaderboardScores = [];
 
-function leaderBoardStorag() {
+//MUCH NEEDED WORK CHECK IT OUT ONCE BACK HOME IT'S TOO LATE NOW
+function leaderBoardStorage() {
     theLeaderboardScores.push(localStorage.getItem("Score"));
     theLeaderboardUsers.push(localStorage.getItem("User"));
+    console.log(theLeaderboardUsers);
     localStorage.setItem("Users", JSON.stringify(theLeaderboardUsers));
     localStorage.setItem("Scores", JSON.stringify(theLeaderboardScores));
 }
 
 //setting up the leader board forms
 function leaderBoardSubmission() {
-
+    leaderBoardUsers = JSON.parse(localStorage.getItem("Users"));
+    leaderBoardScores = JSON.parse(localStorage.getItem("Scores"));
     for (var i = 0; i < theLeaderboardUsers.length; i++) {
         var form = document.getElementById("form");
         var leaderBoardForm = document.createElement("div");
@@ -299,8 +310,8 @@ function leaderBoardSubmission() {
         theLeaderboardUser.setAttribute("class", "col-8 beefyFont");
         theLeaderboardScore.setAttribute("class", "col-4 beefyFont");
 
-        theLeaderboardScore.textContent = localStorage.getItem("Score");
-        theLeaderboardUser.textContent = localStorage.getItem("User");
+        theLeaderboardScore.textContent = leaderBoardScores[i];
+        theLeaderboardUser.textContent = leaderBoardUsers[i];
 
         leaderBoardForm.appendChild(theLeaderboardUser);
         leaderBoardForm.appendChild(theLeaderboardScore);
