@@ -23,7 +23,7 @@ var highScore = document.querySelector("#highScore");
 
 //global variables manipulated over the course of the quiz
 var userScore = 0;
-var time = 30;
+var time = 0;
 
 // Questions asked stored as objects
 var q1 = {
@@ -56,16 +56,11 @@ function randomizeQuestions() {
         [questionsArray[i], questionsArray[j]] = [questionsArray[j], questionsArray[i]];
     }
 }
-//Pops the last element of the Questions array so that the question used isn't accessible
-//during the rest of the quiz
-function usedQuestion() {
-    questionsArray.pop();
-}
 
 //Setting timer for Quiz
 function quizTimerCountDown() {
     //reset timer for quiz
-    time = 30;
+    time = 60;
     var countDown = setInterval(function () {
         time--;
         timer.textContent = "Timer: " + time + " seconds";
@@ -83,19 +78,11 @@ function quizTimerCountDown() {
 //click event handler taking user back to quiz or starting quiz
 function restartQuiz() {
     questionsArray = [q1, q2, q3, q4, q5];
+    userScore = 0;
     randomizeQuestions();
-    // quizTimerCountDown();
-    nextQuestion();
-}
-
-//Sets up page with a question and answers
-function nextQuestion() {
-    if (questionsArray === []) {
-        formCreator()
-        return;
-    }
-    var nextQuestion = questionsArray[questionsArray.length - 1];
-    usedQuestion();
+    quizTimerCountDown();
+    var nextQuestion = questionsArray.pop();
+    // console.log(questionsArray);
     questions.textContent = nextQuestion.qstion;
     // create unique id's to later find correct answer to question
     for (var i = 0; i < nextQuestion.answers.length; i++) {
@@ -107,8 +94,31 @@ function nextQuestion() {
         highScore.appendChild(choiceDescription);
     }
     randomizeSelection(nextQuestion);
-    userChoice();
-    console.log(highScore.childElementCount);
+}
+
+//Sets up page with a question and answers
+function nextQuestion() {
+    if (questionsArray.length === 0) {
+        formCreator()
+        return;
+    }
+    var nextQuestion = questionsArray.pop();
+    // console.log(nextQuestion);
+    questions.textContent = nextQuestion.qstion;
+    // create unique id's to later find correct answer to question
+    highScore.innerHTML = "";
+    for (var i = 0; i < nextQuestion.answers.length; i++) {
+        var choiceDescription = document.createElement("button");
+        choiceDescription.setAttribute("type", "button");
+        choiceDescription.setAttribute("class", "btn btn-primary answer");
+        choiceDescription.setAttribute("id", i);
+        choiceDescription.textContent = nextQuestion.answers[i];
+        // console.log(nextQuestion.answers[i]);
+        highScore.appendChild(choiceDescription);
+    }
+    randomizeSelection(nextQuestion);
+    // console.log(highScore.childElementCount);
+    // return;
 }
 
 // Randomize selection of answers so that User can't cheat
@@ -132,35 +142,29 @@ function randomizeSelection(nextQuestion) {
 }
 
 // Listening to the user Choice and giving feedback on whether it is right or wrong
-function userChoice() {
-    highScore.addEventListener("click", function (event) {
-        event.preventDefault();
-        if (event.target.matches(".answer")) {
-            var userAnswer = event.target.id;
-            var feedBack = document.createElement("h5")
-            if (userAnswer === "0") {
-                userScore = userScore + 10;
-                feedBack.textContent = "Correct!";
-                highScore.appendChild(document.createElement("hr"));
-                highScore.appendChild(feedBack);
-                // setTimeout(function () {
-                //     nextQuestion();
-                // }, 500);
-                nextQuestion();
-            }
-            else {
-                time = time - 10;
-                feedBack.textContent = "Wrong!";
-                highScore.appendChild(document.createElement("hr"));
-                highScore.appendChild(feedBack);
-                // setTimeout(function () {
-                //     nextQuestion();
-                // }, 500);
-                nextQuestion();
-            }
+highScore.addEventListener("click", function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+    if (event.target.matches(".answer")) {
+        var userAnswer = event.target.id;
+        var feedBack = document.createElement("h5")
+        if (userAnswer === "0") {
+            userScore = userScore + 10;
+            feedBack.textContent = "Correct!";
+            highScore.appendChild(document.createElement("hr"));
+            highScore.appendChild(feedBack);
         }
-    })
-}
+        else {
+            time = time - 10;
+            feedBack.textContent = "Wrong!";
+            highScore.appendChild(document.createElement("hr"));
+            highScore.appendChild(feedBack);
+        }
+        setTimeout(function () {
+            nextQuestion();
+        }, 500);
+    }
+})
 
 // Event listener for starting quiz asigned to Begin Button
 document.getElementById("Quiz").addEventListener("click", restartQuiz);
@@ -169,6 +173,7 @@ document.getElementById("Quiz").addEventListener("click", restartQuiz);
 
 //create the final form after quiz is concluded
 function formCreator() {
+    time = 0;
     questions.textContent = "All Done!";
 
     //checking for nodes
