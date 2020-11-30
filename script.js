@@ -16,20 +16,19 @@
 //  -CLEAR LEADERBOARDS
 //      -CLICK BUTTON TO CLEAR STORED DATA
 
-//selections of tags to reference
+//selections of MAJOR tags to reference
 var timer = document.querySelector("#Timer");
 var questions = document.querySelector("#Questions");
 var highScore = document.querySelector("#highScore");
 
-//global variables
-var userScore = 18;
+//global variables manipulated over the course of the quiz
+var userScore = 0;
 var time = 3;
 
-//objects
+// Questions asked stored as objects
 var q1 = {
     qstion: "Inside which HTML element do we put the JavaScript?",
     answers: ["<script>", "<javascript>", "<js>", "<scripting>"],
-
 }
 var q2 = {
     qstion: "The external JavaScript file must contain the <script> tag.",
@@ -50,6 +49,18 @@ var q5 = {
 
 //Questions stored as an array of objects
 var questionsArray = [q1, q2, q3, q4, q5];
+//Then randomize everytime so that user can't cheat
+function randomizeQuestions() {
+    for (var i = questionsArray.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        [questionsArray[i], questionsArray[j]] = [questionsArray[j], questionsArray[i]];
+    }
+}
+//Pops the last element of the Questions array so that the question used isn't accessible
+//during the rest of the quiz
+function usedQuestion() {
+    questionsArray.pop();
+}
 
 //Setting timer for Quiz
 function quizTimerCountDown() {
@@ -145,7 +156,10 @@ function formCreator() {
 
 //click event handler taking user back to quiz or starting quiz
 function restartQuiz() {
-    var randomQuestion = questionsArray[Math.floor(Math.random() * questionsArray.length)];
+    questionsArray = [q1, q2, q3, q4, q5];
+    randomizeQuestions();
+    var randomQuestion = questionsArray[questionsArray.length - 1];
+    usedQuestion();
     questions.textContent = randomQuestion.qstion;
     // create unique id's to later find correct answer to question
     for (var i = 0; i < randomQuestion.answers.length; i++) {
@@ -161,16 +175,12 @@ function restartQuiz() {
 
 }
 
-document.getElementById("Quiz").addEventListener("click", restartQuiz);
-
+// Randomize selection of answers so that User can't cheat
 function randomizeSelection(randomQuestion) {
     var choices = [];
     for (var i = 0; i < randomQuestion.answers.length; i++) {
         choices.push(document.getElementById(i));
     }
-    // for (var i = 0; i < randomQuestion.answers.length; i++) {
-    //     console.log(choices[i]);
-    // }
     for (var i = choices.length - 1; i > 0; i--) {
         var j = Math.floor(Math.random() * (i + 1));
         [choices[i], choices[j]] = [choices[j], choices[i]];
@@ -182,14 +192,12 @@ function randomizeSelection(randomQuestion) {
         choices[i].textContent = (i + 1) + ". " + buttontext;
         buttonBreak.appendChild(choices[i]);
         highScore.appendChild(buttonBreak);
-        console.log(choices[i]);
     }
-    // for (var i = 0; i < randomQuestion.answers.length; i++) {
-    //     document.getElementById(i).innerHTML = choices[i];
-    // }
-
-
 }
+
+// Event listener for starting quiz asigned to Begin Button
+document.getElementById("Quiz").addEventListener("click", restartQuiz);
+
 //object
 //question
 //array 
