@@ -46,3 +46,9 @@ h5 {
     left: 38%;
     top: 15px;
 }
+
+.beefyFont {
+    text-align: left;
+    font-size: 26px;
+    font-weight: bolder;
+}

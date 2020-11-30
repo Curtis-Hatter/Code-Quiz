@@ -194,6 +194,7 @@ function formCreator() {
     var clearButton = document.createElement("button");
 
     //create attributes for div elements
+    form.setAttribute("id", "form");
     div1.setAttribute("class", "form-row");
     div2.setAttribute("class", "form-row");
     div11.setAttribute("class", "col-9");
@@ -202,6 +203,7 @@ function formCreator() {
     //create attributes for input elements
     input1.setAttribute("type", "text");
     input1.setAttribute("class", "form-control");
+    input1.setAttribute("value", "");
     input1.setAttribute("placeholder", "Welcome to the Leaderboards");
 
     //setting attributes to submit button
@@ -244,4 +246,64 @@ function formCreator() {
 
     //adding event listeners to restart button to restart quiz
     returnButton.addEventListener("click", restartQuiz);
+    //adding event listeners to submit button for score recording
+    submitButton.addEventListener("click", function (event) {
+        event.preventDefault();
+        var userInitials = input1.value.trim();
+        if (userInitials !== "") {
+            //deleting submit button and input form
+            var formParent = document.querySelector(".form-row").parentElement;
+            formParent.removeChild(formParent.childNodes[0]);
+            // and break line for cleaner look
+            formParent.removeChild(formParent.childNodes[0]);
+            //apply hr for cleaner look
+            highScore.insertBefore(document.createElement("hr"), highScore.childNodes[1]);
+
+            //storing user information
+            localStorage.setItem("User", userInitials);
+            localStorage.setItem("Score", userScore);
+
+            //leaderboardSubmission function here
+            leaderBoardSubmission();
+
+            //apply hr for cleaner look
+            highScore.appendChild(document.createElement("hr"));
+        }
+    })
+    //add event listener to clear button to clear leaderboards
+    clearButton.addEventListener("click", function () {
+
+    })
+}
+
+//creating array for local storage to be presented
+var theLeaderboardUsers = [];
+var theLeaderboardScores = [];
+
+function leaderBoardStorag() {
+    theLeaderboardScores.push(localStorage.getItem("Score"));
+    theLeaderboardUsers.push(localStorage.getItem("User"));
+    localStorage.setItem("Users", JSON.stringify(theLeaderboardUsers));
+    localStorage.setItem("Scores", JSON.stringify(theLeaderboardScores));
+}
+
+//setting up the leader board forms
+function leaderBoardSubmission() {
+
+    for (var i = 0; i < theLeaderboardUsers.length; i++) {
+        var form = document.getElementById("form");
+        var leaderBoardForm = document.createElement("div");
+        var theLeaderboardUser = document.createElement("div");
+        var theLeaderboardScore = document.createElement("div");
+        leaderBoardForm.setAttribute("class", "form-row");
+        theLeaderboardUser.setAttribute("class", "col-8 beefyFont");
+        theLeaderboardScore.setAttribute("class", "col-4 beefyFont");
+
+        theLeaderboardScore.textContent = localStorage.getItem("Score");
+        theLeaderboardUser.textContent = localStorage.getItem("User");
+
+        leaderBoardForm.appendChild(theLeaderboardUser);
+        leaderBoardForm.appendChild(theLeaderboardScore);
+        form.appendChild(leaderBoardForm);
+    }
 }
