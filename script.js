@@ -9,12 +9,14 @@
 //  -WRONG?: OUTPUT WRONG THEN UPDATE TIMER
 //  -ONCE TIME HAS RUN OUT OR ALL QUESTIONS ANSWERED
 // OUTPUT LEADERBOARD (FORM)
-//  -USER CAN INPUT TEXT FOR HIGHSCORE BY SUBMITTING
+//  -USER CAN INPUT TEXT FOR HIGHSCORE BY SUBMITTING (Click submit button)
 //      -STORES USER DATA AND SCORE TOGETHER IN LOCAL STORAGE
+//      -POPULATE LEADERBOARD WITH ARRAY FROM LOCAL STORAGE
 //  -RESTART QUIZ
 //      -(GO BACK TO "USER BEGINS QUIZ")
 //  -CLEAR LEADERBOARDS
 //      -CLICK BUTTON TO CLEAR STORED DATA
+//      -ALSO CLEAR LEADERBOARD (FORM)
 
 //selections of MAJOR tags to reference
 var timer = document.querySelector("#Timer");
@@ -25,6 +27,7 @@ var viewHighscores = document.querySelector(".navbar-brand");
 //global variables manipulated over the course of the quiz
 var userScore = 0;
 var time = 0;
+//Need countdown for ClearInterval() if user wants to see Highscores while in quiz
 var countDown;
 
 // Questions asked stored as objects
@@ -59,23 +62,26 @@ function randomizeQuestions() {
     }
 }
 
+//ask about CLEAR INTERVAL SINCE (IF USER CLICKS TOO FAST: COUNTDOWN TIME ITERATES WHAT SEEMS LIKE FOREVER)
 //Setting timer for Quiz
 function quizTimerCountDown() {
-    //reset timer for quiz
-    time = 60;
+    //reset time for quiz
+    time = 50;
+    //allow countDown to be the seconds adjusted
     countDown = setInterval(function () {
         time--;
         timer.textContent = "Timer: " + time + " seconds";
         if (time <= 0) {
             time = 0;
             timer.textContent = "Timer: " + time + " seconds";
-            formCreator()
+            //stop counter as well as countDown
             clearInterval(countDown);
+            formCreator()
             return;
         }
+        return;
     }, 1000)
 }
-// quizTimerCountDown();
 
 //click event handler taking user back to quiz or starting quiz
 function restartQuiz() {
@@ -91,6 +97,8 @@ function restartQuiz() {
         var choiceDescription = document.createElement("button");
         choiceDescription.setAttribute("type", "button");
         choiceDescription.setAttribute("class", "btn btn-primary answer");
+        //DISABLE THAT GNARLY DOUBLE CLICK
+        choiceDescription.setAttribute("onclick", "this.disabled=true");
         choiceDescription.setAttribute("id", i);
         choiceDescription.textContent = nextQuestion.answers[i];
         highScore.appendChild(choiceDescription);
@@ -113,6 +121,8 @@ function nextQuestion() {
         var choiceDescription = document.createElement("button");
         choiceDescription.setAttribute("type", "button");
         choiceDescription.setAttribute("class", "btn btn-primary answer");
+        //DISABLE THAT GNARLY DOUBLE CLICK
+        choiceDescription.setAttribute("onclick", "this.disabled=true");
         choiceDescription.setAttribute("id", i);
         choiceDescription.textContent = nextQuestion.answers[i];
         // console.log(nextQuestion.answers[i]);
@@ -150,6 +160,7 @@ highScore.addEventListener("click", function (event) {
     if (event.target.matches(".answer")) {
         var userAnswer = event.target.id;
         var feedBack = document.createElement("h5")
+
         if (userAnswer === "0") {
             userScore = userScore + 10;
             feedBack.textContent = "Correct!";
