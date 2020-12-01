@@ -175,19 +175,14 @@ document.getElementById("Quiz").addEventListener("click", restartQuiz);
 var theLeaderboardUsers = [];
 var theLeaderboardScores = [];
 if ((localStorage.getItem("User")) || (localStorage.getItem("Scores"))) {
-    leaderBoardUsers = JSON.parse(localStorage.getItem("Users"));
-    leaderBoardScores = JSON.parse(localStorage.getItem("Scores"));
-    console.log("PLEASE WORK");
-    console.log(leaderBoardUsers);
+    theLeaderboardUsers = JSON.parse(localStorage.getItem("Users"));
+    theLeaderboardScores = JSON.parse(localStorage.getItem("Scores"));
 }
 
 //create the final form after quiz is concluded
 function formCreator() {
     time = 0;
     questions.textContent = "All Done!";
-
-    //checking for nodes
-    // console.log(highScore.childElementCount)
 
     //changing innerHTML for Content
     highScore.innerHTML = "<h3> Your final score is: " + userScore + "!</h3>";
@@ -281,18 +276,19 @@ function formCreator() {
             highScore.appendChild(document.createElement("hr"));
         }
     })
+    input1.addEventListener("submit", function (enter) {
+        enter.preventDefault();
+    }, false)
     //add event listener to clear button to clear leaderboards
     clearButton.addEventListener("click", function () {
 
     })
 }
 
-
-//MUCH NEEDED WORK CHECK IT OUT ONCE BACK HOME IT'S TOO LATE NOW
+//local storage function
 function leaderBoardStorage() {
     theLeaderboardScores.push(localStorage.getItem("Score"));
     theLeaderboardUsers.push(localStorage.getItem("User"));
-    console.log(theLeaderboardUsers);
     localStorage.setItem("Users", JSON.stringify(theLeaderboardUsers));
     localStorage.setItem("Scores", JSON.stringify(theLeaderboardScores));
 }
