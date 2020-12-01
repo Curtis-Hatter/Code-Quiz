@@ -246,9 +246,6 @@ function formCreator() {
     form.appendChild(document.createElement("br"));
     form.appendChild(div2);
 
-    //recheck for nodes
-    // console.log(highScore.childElementCount);
-
     //adding event listeners to restart button to restart quiz
     returnButton.addEventListener("click", restartQuiz);
     //adding event listeners to submit button for score recording
@@ -276,7 +273,8 @@ function formCreator() {
             highScore.appendChild(document.createElement("hr"));
         }
     })
-    input1.addEventListener("submit", function (enter) {
+    //Prevent User from Pressing Enter and Forcing User to click submit
+    form.addEventListener("submit", function (enter) {
         enter.preventDefault();
     }, false)
     //add event listener to clear button to clear leaderboards
