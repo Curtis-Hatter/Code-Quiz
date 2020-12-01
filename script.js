@@ -185,7 +185,7 @@ function formCreator() {
     questions.textContent = "All Done!";
 
     //changing innerHTML for Content
-    highScore.innerHTML = "<h3> Your final score is: " + userScore + "!</h3>";
+    highScore.innerHTML = "<h3 id=\"score\" > Your final score is: " + userScore + "!</h3>";
 
     //create all childs for Highscore form
     var form = document.createElement("form");
@@ -218,7 +218,7 @@ function formCreator() {
 
     //setting attribute to button that returns to beginning of quiz
     returnButton.setAttribute("type", "button");
-    returnButton.setAttribute("class", "btn btn-primary col-3")
+    returnButton.setAttribute("class", "btn btn-primary col-5")
     returnButton.textContent = "Restart";
 
     //setting attributes to button that clears the logs
@@ -235,11 +235,11 @@ function formCreator() {
     highScore.appendChild(form);
 
     //child appending to create button row
-    var div22 = document.createElement("div");
+    // var div22 = document.createElement("div");
     var div21 = document.createElement("div");
     div21.setAttribute("class", "col-2");
-    div22.setAttribute("class", "col-2");
-    div2.appendChild(div22);
+    // div22.setAttribute("class", "col-2");
+    // div2.appendChild(div22);
     div2.appendChild(returnButton);
     div2.appendChild(div21);
     div2.appendChild(clearButton);
@@ -254,11 +254,12 @@ function formCreator() {
         var userInitials = input1.value.trim();
         if (userInitials !== "") {
             //deleting submit button and input form
-            var formParent = document.querySelector(".form-row").parentElement;
+            var formParent = document.getElementById("form");
             formParent.removeChild(formParent.childNodes[0]);
             // and break line for cleaner look
             formParent.removeChild(formParent.childNodes[0]);
             //apply hr for cleaner look
+
             highScore.insertBefore(document.createElement("hr"), highScore.childNodes[1]);
 
             //storing user information
@@ -278,8 +279,12 @@ function formCreator() {
         enter.preventDefault();
     }, false)
     //add event listener to clear button to clear leaderboards
-    clearButton.addEventListener("click", function () {
-
+    clearButton.addEventListener("click", function (enter) {
+        enter.preventDefault();
+        localStorage.clear();
+        while (document.querySelector(".beefyFont")) {
+            document.querySelector(".beefyFont").remove();
+        }
     })
 }
 
@@ -300,9 +305,9 @@ function leaderBoardSubmission() {
         var leaderBoardForm = document.createElement("div");
         var theLeaderboardUser = document.createElement("div");
         var theLeaderboardScore = document.createElement("div");
-        leaderBoardForm.setAttribute("class", "form-row");
-        theLeaderboardUser.setAttribute("class", "col-8 beefyFont");
-        theLeaderboardScore.setAttribute("class", "col-4 beefyFont");
+        leaderBoardForm.setAttribute("class", "form-row beefyFont");
+        theLeaderboardUser.setAttribute("class", "col-8");
+        theLeaderboardScore.setAttribute("class", "col-4");
 
         theLeaderboardScore.textContent = leaderBoardScores[i];
         theLeaderboardUser.textContent = leaderBoardUsers[i];
