@@ -20,10 +20,12 @@
 var timer = document.querySelector("#Timer");
 var questions = document.querySelector("#Questions");
 var highScore = document.querySelector("#highScore");
+var viewHighscores = document.querySelector(".navbar-brand");
 
 //global variables manipulated over the course of the quiz
 var userScore = 0;
 var time = 0;
+var countDown;
 
 // Questions asked stored as objects
 var q1 = {
@@ -61,7 +63,7 @@ function randomizeQuestions() {
 function quizTimerCountDown() {
     //reset timer for quiz
     time = 60;
-    var countDown = setInterval(function () {
+    countDown = setInterval(function () {
         time--;
         timer.textContent = "Timer: " + time + " seconds";
         if (time <= 0) {
@@ -259,7 +261,6 @@ function formCreator() {
             // and break line for cleaner look
             formParent.removeChild(formParent.childNodes[0]);
             //apply hr for cleaner look
-
             highScore.insertBefore(document.createElement("hr"), highScore.childNodes[1]);
 
             //storing user information
@@ -285,6 +286,7 @@ function formCreator() {
         while (document.querySelector(".beefyFont")) {
             document.querySelector(".beefyFont").remove();
         }
+        theLeaderboardUsers = [];
     })
 }
 
@@ -298,8 +300,8 @@ function leaderBoardStorage() {
 
 //setting up the leader board forms
 function leaderBoardSubmission() {
-    leaderBoardUsers = JSON.parse(localStorage.getItem("Users"));
-    leaderBoardScores = JSON.parse(localStorage.getItem("Scores"));
+    theleaderBoardUsers = JSON.parse(localStorage.getItem("Users"));
+    theleaderBoardScores = JSON.parse(localStorage.getItem("Scores"));
     for (var i = 0; i < theLeaderboardUsers.length; i++) {
         var form = document.getElementById("form");
         var leaderBoardForm = document.createElement("div");
@@ -309,11 +311,33 @@ function leaderBoardSubmission() {
         theLeaderboardUser.setAttribute("class", "col-8");
         theLeaderboardScore.setAttribute("class", "col-4");
 
-        theLeaderboardScore.textContent = leaderBoardScores[i];
-        theLeaderboardUser.textContent = leaderBoardUsers[i];
+        theLeaderboardScore.textContent = theleaderBoardScores[i];
+        theLeaderboardUser.textContent = theleaderBoardUsers[i];
 
         leaderBoardForm.appendChild(theLeaderboardUser);
         leaderBoardForm.appendChild(theLeaderboardScore);
         form.appendChild(leaderBoardForm);
     }
 }
+
+viewHighscores.addEventListener("click", function (event) {
+    event.preventDefault();
+    time = 0;
+    clearInterval(countDown)
+    timer.textContent = "Timer: " + time + " seconds";
+    formCreator();
+    //deleting submit button and input form
+    var formParent = document.getElementById("form");
+    formParent.removeChild(formParent.childNodes[0]);
+    // and break line for cleaner look
+    formParent.removeChild(formParent.childNodes[0]);
+    //apply hr for cleaner look
+    highScore.insertBefore(document.createElement("hr"), highScore.childNodes[1]);
+
+    //leaderboardSubmission function here
+    if (theLeaderboardUsers !== []) {
+        leaderBoardSubmission();
+    }
+    //apply hr for cleaner look
+    highScore.appendChild(document.createElement("hr"));
+})
