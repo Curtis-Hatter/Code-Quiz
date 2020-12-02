@@ -100,6 +100,7 @@ function restartQuiz() {
     questionsArray = [q1, q2, q3, q4, q5];
     userScore = 0;
     randomizeQuestions();
+    //Rebecca Recommendation: assign true for countdown so that we can start quizTimerCountDown()
     isCountDown = true;
     quizTimerCountDown();
     var nextQuestion = questionsArray.pop();
