@@ -69,6 +69,7 @@ function quizTimerCountDown() {
     //reset time for quiz
     time = 50;
     //allow countDown to be the seconds adjusted
+    //Rebecca Recommendation: Use an if statement and boolean to handle recursive issue
     if (isCountDown) {
         countDown = setInterval(function () {
             time--;
@@ -77,6 +78,8 @@ function quizTimerCountDown() {
                 time = 0;
                 timer.textContent = "Timer: " + time + " seconds";
                 //stop counter as well as countDown
+                //Rebecca Recommendation: Create a Function to apply clearInterval(countdown);
+                //  - also assign false to boolean
                 stopQuizTimer();
                 formCreator();
                 return;
@@ -86,6 +89,7 @@ function quizTimerCountDown() {
     }
 }
 
+//Rebecca Recommendation StopQuizTimer function to be called withing setInterval
 function stopQuizTimer() {
     isCountDown = false;
     clearInterval(countDown);
@@ -189,7 +193,7 @@ highScore.addEventListener("click", function (event) {
 })
 
 // Event listener for starting quiz asigned to Begin Button
-document.getElementById("Quiz").addEventListener("click", restartQuiz);
+document.getElementById("Quiz").addEventListener("click", restartQuiz); //THIS IS WHERE RESTARTQUIZ IS CALLED FOR THE BEGIN BUTTON AT THE START OF THE QUIZ
 
 /* NEED TO BREAK HERE FOR SANITY */
 
@@ -270,7 +274,7 @@ function formCreator() {
     form.appendChild(div2);
 
     //adding event listeners to restart button to restart quiz
-    returnButton.addEventListener("click", restartQuiz);
+    returnButton.addEventListener("click", restartQuiz); //THIS IS WHERE RESTARTQUIZ IS CALLED ALSO CALLED ASIGN TO THE RESTART BUTTON WITHIN THE LEADERBOARDS
 
     //adding event listeners to submit button for score recording
     submitButton.addEventListener("click", function (event) {
