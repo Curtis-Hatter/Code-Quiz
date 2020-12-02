@@ -29,6 +29,7 @@ var userScore = 0;
 var time = 0;
 //Need countdown for ClearInterval() if user wants to see Highscores while in quiz
 var countDown;
+var isCountDown = false;
 
 // Questions asked stored as objects
 var q1 = {
@@ -68,19 +69,26 @@ function quizTimerCountDown() {
     //reset time for quiz
     time = 50;
     //allow countDown to be the seconds adjusted
-    countDown = setInterval(function () {
-        time--;
-        timer.textContent = "Timer: " + time + " seconds";
-        if (time <= 0) {
-            time = 0;
+    if (isCountDown) {
+        countDown = setInterval(function () {
+            time--;
             timer.textContent = "Timer: " + time + " seconds";
-            //stop counter as well as countDown
-            clearInterval(countDown);
-            formCreator()
+            if (time <= 0) {
+                time = 0;
+                timer.textContent = "Timer: " + time + " seconds";
+                //stop counter as well as countDown
+                stopQuizTimer();
+                formCreator();
+                return;
+            }
             return;
-        }
-        return;
-    }, 1000)
+        }, 1000)
+    }
+}
+
+function stopQuizTimer() {
+    isCountDown = false;
+    clearInterval(countDown);
 }
 
 //click event handler taking user back to quiz or starting quiz
@@ -88,6 +96,7 @@ function restartQuiz() {
     questionsArray = [q1, q2, q3, q4, q5];
     userScore = 0;
     randomizeQuestions();
+    isCountDown = true;
     quizTimerCountDown();
     var nextQuestion = questionsArray.pop();
     // console.log(questionsArray);
@@ -194,6 +203,7 @@ if ((localStorage.getItem("User")) || (localStorage.getItem("Scores"))) {
 
 //create the final form after quiz is concluded
 function formCreator() {
+    isCountDown = false;
     time = 0;
     questions.textContent = "All Done!";
 
@@ -261,6 +271,7 @@ function formCreator() {
 
     //adding event listeners to restart button to restart quiz
     returnButton.addEventListener("click", restartQuiz);
+
     //adding event listeners to submit button for score recording
     submitButton.addEventListener("click", function (event) {
         event.preventDefault();
