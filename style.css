@@ -24,6 +24,24 @@ h6 {
     border-color: rgb(66 39 111);
 }
 
+.btn-primary:hover {
+    color: #fff;
+    background-color: #8875e6;
+    border-color: #8875e6;
+}
+
+.btn-primary.disabled, .btn-primary:disabled {
+    color: rgba(255, 255, 255, 0);
+    background-color: rgba(160, 117, 230, 0);
+    border-color: #8875e600;
+}
+
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+    color: #fff;
+    background-color: #8875e6;
+    border-color: #8875e6;
+}
+
 hr {
     margin: 5px 18% 5px 18%;
     background: darkgray;
@@ -50,6 +68,7 @@ h5 {
 .beefyFont {
     margin-top: 15px;
     text-align: left;
+    word-wrap: break-word;
     font-size: 26px;
     font-weight: bolder;
 }
