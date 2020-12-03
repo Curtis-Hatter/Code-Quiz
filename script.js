@@ -29,6 +29,7 @@ var userScore = 0;
 var time = 0;
 //Need countdown for ClearInterval() if user wants to see Highscores while in quiz
 var countDown;
+//Decalare a boolean to handle the SetInterval INFINITE Loop D:
 var isCountDown = false;
 
 // Questions asked stored as objects
@@ -70,29 +71,28 @@ function quizTimerCountDown() {
     time = 50;
     //allow countDown to be the seconds adjusted
     //Rebecca Recommendation: Use an if statement and boolean to handle recursive issue
-    if (isCountDown) {
-        countDown = setInterval(function () {
-            time--;
+
+    countDown = setInterval(function () {
+        time--;
+        timer.textContent = "Timer: " + time + " seconds";
+        if (time <= 0) {
+            time = 0;
             timer.textContent = "Timer: " + time + " seconds";
-            if (time <= 0) {
-                time = 0;
-                timer.textContent = "Timer: " + time + " seconds";
-                //stop counter as well as countDown
-                //Rebecca Recommendation: Create a Function to apply clearInterval(countdown);
-                //  - also assign false to boolean
-                stopQuizTimer();
+            //stop counter as well as countDown
+            //Rebecca Recommendation: Create a Function to apply clearInterval(countdown);
+            //  - also assign false to boolean
+            clearInterval(countDown);
+            //!!!!!USING REBECCA'S RECOMMENDATION OF HAVING AN IF STATEMENT!!!! 
+            //IT WAS JUST IN THE WRONG PLACE
+            //but now it works... I think...
+            if (isCountDown) {
                 formCreator();
-                return;
             }
             return;
-        }, 1000)
-    }
-}
+        }
+        return;
+    }, 1000)
 
-//Rebecca Recommendation StopQuizTimer function to be called withing setInterval
-function stopQuizTimer() {
-    isCountDown = false;
-    clearInterval(countDown);
 }
 
 //click event handler taking user back to quiz or starting quiz
@@ -100,7 +100,7 @@ function restartQuiz() {
     questionsArray = [q1, q2, q3, q4, q5];
     userScore = 0;
     randomizeQuestions();
-    //Rebecca Recommendation: assign true for countdown so that we can start quizTimerCountDown()
+    //Rebecca Recommendation: assign true for countdown so that we can start the formcreatore()
     isCountDown = true;
     quizTimerCountDown();
     var nextQuestion = questionsArray.pop();
@@ -208,6 +208,7 @@ if ((localStorage.getItem("User")) || (localStorage.getItem("Scores"))) {
 
 //create the final form after quiz is concluded
 function formCreator() {
+    //assing isCountDown to stop the infinite loop of the formCreator()
     isCountDown = false;
     time = 0;
     questions.textContent = "All Done!";
