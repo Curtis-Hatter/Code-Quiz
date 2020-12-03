@@ -174,12 +174,15 @@ highScore.addEventListener("click", function (event) {
     if (event.target.matches(".answer")) {
         var userAnswer = event.target.id;
         var feedBack = document.createElement("h5")
-
+        document.querySelectorAll(".btn").forEach(elem => {
+            elem.disabled = true;
+        })
         if (userAnswer === "0") {
             userScore = userScore + 10;
             feedBack.textContent = "Correct!";
             highScore.appendChild(document.createElement("hr"));
             highScore.appendChild(feedBack);
+
         }
         else {
             time = time - 10;
