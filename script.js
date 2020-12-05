@@ -27,8 +27,10 @@ var viewHighscores = document.querySelector(".navbar-brand");
 //global variables manipulated over the course of the quiz
 var userScore = 0;
 var time = 0;
+
 //Need countdown for ClearInterval() if user wants to see Highscores while in quiz
 var countDown;
+
 //Decalare a boolean to handle the SetInterval INFINITE Loop D:
 var isCountDown = false;
 
@@ -56,6 +58,7 @@ var q5 = {
 
 //Questions stored as an array of objects
 var questionsArray = [q1, q2, q3, q4, q5];
+
 //Then randomize everytime so that user can't cheat
 function randomizeQuestions() {
     for (var i = questionsArray.length - 1; i > 0; i--) {
@@ -64,14 +67,14 @@ function randomizeQuestions() {
     }
 }
 
-//ask about CLEAR INTERVAL SINCE (IF USER CLICKS TOO FAST: COUNTDOWN TIME ITERATES WHAT SEEMS LIKE FOREVER)
+//ask about CLEAR INTERVAL SINCE (IF USER CLICKS TOO FAST: COUNTDOWN TIME ITERATES WHAT SEEMS LIKE FOREVER) **FIXED**
 //Setting timer for Quiz
 function quizTimerCountDown() {
     //reset time for quiz
     time = 50;
+
     //allow countDown to be the seconds adjusted
     //Rebecca Recommendation: Use an if statement and boolean to handle recursive issue
-
     countDown = setInterval(function () {
         time--;
         timer.textContent = "Timer: " + time + " seconds";
@@ -84,7 +87,7 @@ function quizTimerCountDown() {
             clearInterval(countDown);
             //!!!!!USING REBECCA'S RECOMMENDATION OF HAVING AN IF STATEMENT!!!! 
             //IT WAS JUST IN THE WRONG PLACE
-            //but now it works... I think...
+            //but now it works
             if (isCountDown) {
                 formCreator();
             }
@@ -200,6 +203,7 @@ highScore.addEventListener("click", function (event) {
 document.getElementById("Quiz").addEventListener("click", restartQuiz); //THIS IS WHERE RESTARTQUIZ IS CALLED FOR THE BEGIN BUTTON AT THE START OF THE QUIZ
 
 /* NEED TO BREAK HERE FOR SANITY */
+// THIS IS THE FORM/LEADERBOARD AND THEIR WORKINGS
 
 //creating array for local storage to be presented
 var theLeaderboardUsers = [];
@@ -351,6 +355,7 @@ function leaderBoardSubmission() {
     }
 }
 
+//Navbar takes user to the Leaderboards
 viewHighscores.addEventListener("click", function (event) {
     event.preventDefault();
     time = 0;
