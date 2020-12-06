@@ -84,7 +84,6 @@ function quizTimerCountDown() {
             //stop counter as well as countDown
             //Rebecca Recommendation: Create a Function to apply clearInterval(countdown);
             //  - also assign false to boolean
-            clearInterval(countDown);
             //!!!!!USING REBECCA'S RECOMMENDATION OF HAVING AN IF STATEMENT!!!! 
             //IT WAS JUST IN THE WRONG PLACE
             //but now it works
@@ -217,7 +216,10 @@ if ((localStorage.getItem("User")) || (localStorage.getItem("Scores"))) {
 function formCreator() {
     //assing isCountDown to stop the infinite loop of the formCreator()
     isCountDown = false;
+    //clear interval to stop timer
+    clearInterval(countDown);
     time = 0;
+    timer.textContent = "Timer: " + time + " seconds";
     questions.textContent = "All Done!";
 
     //changing innerHTML for Content
@@ -359,7 +361,6 @@ function leaderBoardSubmission() {
 viewHighscores.addEventListener("click", function (event) {
     event.preventDefault();
     time = 0;
-    clearInterval(countDown)
     timer.textContent = "Timer: " + time + " seconds";
     formCreator();
     //deleting submit button and input form
